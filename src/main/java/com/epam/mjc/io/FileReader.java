@@ -5,9 +5,8 @@ import java.io.*;
 public class FileReader {
 
     public Profile getDataFromFile(File file) {
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedReader br = new BufferedReader(new InputStreamReader(fis))) {
 
             String line;
             String name = null;
@@ -34,11 +33,12 @@ public class FileReader {
                         case "Phone":
                             phone = Long.parseLong(value);
                             break;
+                        default:
+                            // Handle unrecognized keys here if needed
+                            break;
                     }
                 }
             }
-
-            br.close();
 
             return new Profile(name, age, email, phone);
         } catch (IOException e) {
